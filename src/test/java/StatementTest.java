@@ -10,16 +10,11 @@ import static junit.framework.Assert.assertEquals;
 
 public class StatementTest {
 
-    PlayData playData;
-    Invoice invoice;
-
     @Test
     public void testGenerateStatement(){
-        generateInvoiceData();
-        generatePlayData();
 
-        Statement statement = new Statement();
-        String output = statement.GenerateStatement(invoice, playData);
+        Statement statement = new Statement(generatePlayData());
+        String output = statement.GenerateStatement(generateInvoiceData());
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("OldNotRefactored.Statement for BigCo\n");
@@ -32,26 +27,28 @@ public class StatementTest {
         assertEquals(stringBuilder.toString(), output);
     }
 
-    private void generateInvoiceData(){
+    private Invoice generateInvoiceData(){
         try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("invoices.json")) {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readValue(in, JsonNode.class);
-            this.invoice = mapper.treeToValue(jsonNode, Invoice.class);
+            return mapper.treeToValue(jsonNode, Invoice.class);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    private void generatePlayData(){
+    private PlayData generatePlayData(){
         try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("plays.json")) {
             if (in != null) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                this.playData = objectMapper.readValue(in, PlayData.class);
+                return objectMapper.readValue(in, PlayData.class);
             } else {
                 System.err.println("plays.json not found in the classpath");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

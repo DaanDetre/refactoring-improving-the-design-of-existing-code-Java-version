@@ -9,7 +9,13 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class Statement {
-    public String GenerateStatement(Invoice invoice, PlayData playData){
+    PlayData playData;
+
+    public Statement(PlayData playData){
+        this.playData = playData;
+    }
+
+    public String GenerateStatement(Invoice invoice){
         int totalAmount = 0;
         int volumeCredits = 0;
         StringBuilder result = new StringBuilder();
@@ -19,7 +25,7 @@ public class Statement {
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
         for(Performance perf : invoice.getPerformances()){
-            Play play = playData.getPlays().get(perf.getPlayID()); // Assuming playID is unique
+            Play play = playFor(perf); // Assuming playID is unique
             // Now you can work with the 'play' object
 
             int thisAmount = amountFor(perf, play);
@@ -38,6 +44,10 @@ public class Statement {
         result.append("You earned " + volumeCredits + " credits\n");
 
         return result.toString();
+    }
+
+    private Play playFor(Performance perf) {
+        return playData.getPlays().get(perf.getPlayID());
     }
 
     private int amountFor(Performance performance, Play play) {
