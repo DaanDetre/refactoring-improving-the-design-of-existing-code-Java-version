@@ -25,17 +25,14 @@ public class Statement {
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
         for(Performance perf : invoice.getPerformances()){
-            Play play = playFor(perf); // Assuming playID is unique
-            // Now you can work with the 'play' object
-
-            int thisAmount = amountFor(perf, play);
+            int thisAmount = amountFor(perf, playFor(perf));
 
             // add volume credits
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
             // add extra credit for every ten comedy attendees
-            if ("comedy".equals(play.getType())) volumeCredits += Math.floor(perf.getAudience() / 5f);
+            if ("comedy".equals(playFor(perf).getType())) volumeCredits += Math.floor(perf.getAudience() / 5f);
             // print line for this order
-            result.append(play.getName() + ":" + fmt.format(thisAmount / 100) + " "  + perf.getAudience() + " seats\n");
+            result.append(playFor(perf).getName() + ":" + fmt.format(thisAmount / 100) + " "  + perf.getAudience() + " seats\n");
             totalAmount += thisAmount;
 
 
