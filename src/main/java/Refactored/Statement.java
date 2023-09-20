@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class Statement {
+    List<Play> plays;
     public String GenerateStatement(Invoice invoice, PlayData playData){
         int totalAmount = 0;
         int volumeCredits = 0;
@@ -20,15 +21,14 @@ public class Statement {
         Locale locale = new Locale("en", "GB");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
-        List<Play> plays = new ArrayList<>(playData.getPlays().values()) ;
+        plays = new ArrayList<>(playData.getPlays().values());
 
         for(Performance perf : invoice.getPerformances()){
-            List<Play> filteredPlays = plays.stream()
-                    .filter(p -> p.getName().equalsIgnoreCase(perf.getPlayID())).toList();
+            List<Play> filteredPlays = playFor(perf);
 
             if (!filteredPlays.isEmpty()) {
-                Play play = filteredPlays.get(0);
-                int thisAmount = AmountFor(perf, play);
+                final Play play = filteredPlays.get(0);
+                int thisAmount = amountFor(perf, play);
 
                 // add volume credits
                 volumeCredits += Math.max(perf.getAudience() - 30, 0);
@@ -47,7 +47,13 @@ public class Statement {
         return result.toString();
     }
 
-    private int AmountFor(Performance performance, Play play) {
+    private List<Play> playFor(Performance perf) {
+        List<Play> filteredPlays = plays.stream()
+                .filter(p -> p.getName().equalsIgnoreCase(perf.getPlayID())).toList();
+        return filteredPlays;
+    }
+
+    private int amountFor(Performance performance, Play play) {
         int result = 0;
         switch (play.getType()) {
             case "tragedy" -> {
