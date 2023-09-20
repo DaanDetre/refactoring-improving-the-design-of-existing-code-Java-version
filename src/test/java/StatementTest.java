@@ -1,6 +1,6 @@
 import Models.Invoice;
 import Models.PlayData;
-import Refactored.Statement;
+import OldNotRefactored.Statement;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -24,9 +24,10 @@ public class StatementTest {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("OldNotRefactored.Statement for BigCo\n");
         stringBuilder.append("Hamlet:£650.00 55 seats\n");
+        stringBuilder.append("As You Like It:£580.00 35 seats\n");
         stringBuilder.append("Othello:£500.00 40 seats\n");
-        stringBuilder.append("Amount owed is £1,150.00\n");
-        stringBuilder.append("You earned 35 credits\n");
+        stringBuilder.append("Amount owed is £1,730.00\n");
+        stringBuilder.append("You earned 47 credits\n");
 
         assertEquals(stringBuilder.toString(), output);
     }
