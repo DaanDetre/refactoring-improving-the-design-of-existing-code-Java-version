@@ -25,15 +25,14 @@ public class Statement {
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
         for(Performance perf : invoice.getPerformances()){
-            int thisAmount = amountFor(perf);
 
             // add volume credits
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
             // add extra credit for every ten comedy attendees
             if ("comedy".equals(playFor(perf).getType())) volumeCredits += Math.floor(perf.getAudience() / 5f);
             // print line for this order
-            result.append(playFor(perf).getName() + ":" + fmt.format(thisAmount / 100) + " "  + perf.getAudience() + " seats\n");
-            totalAmount += thisAmount;
+            result.append(playFor(perf).getName() + ":" + fmt.format(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
+            totalAmount += amountFor(perf);
 
 
         }
