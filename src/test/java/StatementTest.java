@@ -1,6 +1,6 @@
 import Models.Invoice;
 import Models.PlayData;
-import OldNotRefactored.Statement;
+import Refactored.Statement;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
