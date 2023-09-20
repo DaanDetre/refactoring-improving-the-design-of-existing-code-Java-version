@@ -25,7 +25,7 @@ public class Statement {
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
         for(Performance perf : invoice.getPerformances()){
-            int thisAmount = amountFor(perf, playFor(perf));
+            int thisAmount = amountFor(perf);
 
             // add volume credits
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
@@ -47,23 +47,23 @@ public class Statement {
         return playData.getPlays().get(perf.getPlayID());
     }
 
-    private int amountFor(Performance performance, Play play) {
+    private int amountFor(Performance perf) {
         int result = 0;
-        switch (play.getType()) {
+        switch (playFor(perf).getType()) {
             case "tragedy" -> {
                 result = 40000;
-                if (performance.getAudience() > 30) {
-                    result += 1000 * (performance.getAudience() - 30);
+                if (perf.getAudience() > 30) {
+                    result += 1000 * (perf.getAudience() - 30);
                 }
             }
             case "comedy" -> {
                 result = 30000;
-                if (performance.getAudience() > 20) {
-                    result += 10000 + 500 * (performance.getAudience() - 20);
+                if (perf.getAudience() > 20) {
+                    result += 10000 + 500 * (perf.getAudience() - 20);
                 }
-                result += 300 * performance.getAudience();
+                result += 300 * perf.getAudience();
             }
-            default -> throw new Error("unknown type: " + play.getType());
+            default -> throw new Error("unknown type: " + playFor(perf).getType());
         }
         return result;
     }
