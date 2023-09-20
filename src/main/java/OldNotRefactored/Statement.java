@@ -26,8 +26,7 @@ public class Statement {
 
         for(Performance perf : invoice.getPerformances()){
             List<Play> filteredPlays = plays.stream()
-                    .filter(p -> p.getName().equalsIgnoreCase(perf.getPlayID()))
-                    .collect(Collectors.toList());
+                    .filter(p -> p.getName().equalsIgnoreCase(perf.getPlayID())).toList();
 
             if (!filteredPlays.isEmpty()) {
                 Play play = filteredPlays.get(0); // Assuming playID is unique
@@ -56,7 +55,7 @@ public class Statement {
                 // add volume credits
                 volumeCredits += Math.max(perf.getAudience() - 30, 0);
                 // add extra credit for every ten comedy attendees
-                if ("comedy".equals(play.getType())) volumeCredits += Math.floor(perf.getAudience() / 5);
+                if ("comedy".equals(play.getType())) volumeCredits += Math.floor(perf.getAudience() / 5f);
                 // print line for this order
                 result.append(play.getName() + ":" + fmt.format(thisAmount / 100) + " "  + perf.getAudience() + " seats\n");
                 totalAmount += thisAmount;
