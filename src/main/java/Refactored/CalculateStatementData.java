@@ -8,11 +8,11 @@ import Models.PlayData;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class CreateStatementData {
+public class CalculateStatementData {
     PlayData playData;
     Invoice invoice;
 
-    public CreateStatementData(PlayData playData, Invoice invoice){
+    public CalculateStatementData(PlayData playData, Invoice invoice){
         this.playData = playData;
         this.invoice = invoice;
     }

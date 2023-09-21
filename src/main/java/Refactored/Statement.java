@@ -2,11 +2,7 @@ package Refactored;
 
 import Models.Invoice;
 import Models.Performance;
-import Models.Play;
 import Models.PlayData;
-
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class Statement {
     public Statement(){
@@ -14,11 +10,10 @@ public class Statement {
     }
 
     public String GenerateStatement(PlayData playData, Invoice invoice){
-        CreateStatementData createStatementData = new CreateStatementData(playData, invoice);
-        return renderPlainText(createStatementData);
+        return renderPlainText(new CalculateStatementData(playData, invoice));
     }
 
-    private String renderPlainText(CreateStatementData CSD) {
+    private String renderPlainText(CalculateStatementData CSD) {
         StringBuilder result = new StringBuilder();
         result.append("Refactored.Statement for " + CSD.invoice.getCustomer() +"\n");
 
