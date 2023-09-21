@@ -17,8 +17,12 @@ public class Statement {
     }
 
     public String GenerateStatement(){
+        return renderPlainText();
+    }
+
+    private String renderPlainText() {
         StringBuilder result = new StringBuilder();
-        result.append("OldNotRefactored.Statement for " + invoice.getCustomer() +"\n");
+        result.append("Refactored.Statement for " + invoice.getCustomer() +"\n");
 
         for(Performance perf : invoice.getPerformances()){
             result.append(playFor(perf).getName() + ":" + toPond(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
@@ -26,7 +30,6 @@ public class Statement {
 
         result.append("Amount owed is " +  toPond(totalAmount()/100)+"\n");
         result.append("You earned " + totalVolumeCredits() + " credits\n");
-
         return result.toString();
     }
 
@@ -37,7 +40,6 @@ public class Statement {
         }
         return result;
     }
-
     private int totalVolumeCredits() {
         int result = 0;
         for(Performance perf : invoice.getPerformances()){
@@ -45,24 +47,20 @@ public class Statement {
         }
         return result;
     }
-
     private String toPond(int number) {
         Locale locale = new Locale("en", "GB");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
         return fmt.format(number);
     }
-
     private int volumeCreditsFor(Performance perf) {
         int result = 0;
         result += Math.max(perf.getAudience() - 30, 0);
         if ("comedy".equals(playFor(perf).getType())) result += Math.floor(perf.getAudience() / 5f);
         return result;
     }
-
     private Play playFor(Performance perf) {
         return playData.getPlays().get(perf.getPlayID());
     }
-
     private int amountFor(Performance perf) {
         int result = 0;
         switch (playFor(perf).getType()) {

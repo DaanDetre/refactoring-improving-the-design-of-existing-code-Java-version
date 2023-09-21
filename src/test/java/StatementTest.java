@@ -17,7 +17,7 @@ public class StatementTest {
         String output = statement.GenerateStatement();
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("OldNotRefactored.Statement for BigCo\n");
+        stringBuilder.append("Refactored.Statement for BigCo\n");
         stringBuilder.append("Hamlet:£650.00 55 seats\n");
         stringBuilder.append("As You Like It:£580.00 35 seats\n");
         stringBuilder.append("Othello:£500.00 40 seats\n");
