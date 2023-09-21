@@ -21,19 +21,23 @@ public class Statement {
         StringBuilder result = new StringBuilder();
         result.append("OldNotRefactored.Statement for " + invoice.getCustomer() +"\n");
 
-        Locale locale = new Locale("en", "GB");
-        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
         for(Performance perf : invoice.getPerformances()){
             volumeCredits += volumeCreditsFor(perf);
             // print line for this order
-            result.append(playFor(perf).getName() + ":" + fmt.format(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
+            result.append(playFor(perf).getName() + ":" + format(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
             totalAmount += amountFor(perf);
         }
-        result.append("Amount owed is " +  fmt.format(totalAmount/100)+"\n");
+        result.append("Amount owed is " +  format(totalAmount/100)+"\n");
         result.append("You earned " + volumeCredits + " credits\n");
 
         return result.toString();
+    }
+
+    private String format(int number) {
+        Locale locale = new Locale("en", "GB");
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+        return fmt.format(number);
     }
 
     private int volumeCreditsFor(Performance perf) {
