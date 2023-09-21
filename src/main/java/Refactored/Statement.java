@@ -9,76 +9,25 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 public class Statement {
-    PlayData playData;
-    Invoice invoice;
-    public Statement(PlayData playData, Invoice invoice){
-        this.playData = playData;
-        this.invoice = invoice;
+    public Statement(){
+
     }
 
-    public String GenerateStatement(){
-        return renderPlainText();
+    public String GenerateStatement(PlayData playData, Invoice invoice){
+        CreateStatementData createStatementData = new CreateStatementData(playData, invoice);
+        return renderPlainText(createStatementData);
     }
 
-    private String renderPlainText() {
+    private String renderPlainText(CreateStatementData CSD) {
         StringBuilder result = new StringBuilder();
-        result.append("Refactored.Statement for " + invoice.getCustomer() +"\n");
+        result.append("Refactored.Statement for " + CSD.invoice.getCustomer() +"\n");
 
-        for(Performance perf : invoice.getPerformances()){
-            result.append(playFor(perf).getName() + ":" + toPond(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
+        for(Performance perf : CSD.invoice.getPerformances()){
+            result.append(CSD.playFor(perf).getName() + ":" + CSD.toPond(CSD.amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
         }
 
-        result.append("Amount owed is " +  toPond(totalAmount()/100)+"\n");
-        result.append("You earned " + totalVolumeCredits() + " credits\n");
+        result.append("Amount owed is " +  CSD.toPond(CSD.totalAmount()/100)+"\n");
+        result.append("You earned " + CSD.totalVolumeCredits() + " credits\n");
         return result.toString();
-    }
-
-    private int totalAmount() {
-        int result = 0;
-        for(Performance perf : invoice.getPerformances()){
-            result += amountFor(perf);
-        }
-        return result;
-    }
-    private int totalVolumeCredits() {
-        int result = 0;
-        for(Performance perf : invoice.getPerformances()){
-            result += volumeCreditsFor(perf);
-        }
-        return result;
-    }
-    private String toPond(int number) {
-        Locale locale = new Locale("en", "GB");
-        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-        return fmt.format(number);
-    }
-    private int volumeCreditsFor(Performance perf) {
-        int result = 0;
-        result += Math.max(perf.getAudience() - 30, 0);
-        if ("comedy".equals(playFor(perf).getType())) result += Math.floor(perf.getAudience() / 5f);
-        return result;
-    }
-    private Play playFor(Performance perf) {
-        return playData.getPlays().get(perf.getPlayID());
-    }
-    private int amountFor(Performance perf) {
-        int result = 0;
-        switch (playFor(perf).getType()) {
-            case "tragedy" -> {
-                result = 40000;
-                if (perf.getAudience() > 30) {
-                    result += 1000 * (perf.getAudience() - 30);
-                }
-            }
-            case "comedy" -> {
-                result = 30000;
-                if (perf.getAudience() > 20) {
-                    result += 10000 + 500 * (perf.getAudience() - 20);
-                }
-                result += 300 * perf.getAudience();
-            }
-            default -> throw new Error("unknown type: " + playFor(perf).getType());
-        }
-        return result;
     }
 }
