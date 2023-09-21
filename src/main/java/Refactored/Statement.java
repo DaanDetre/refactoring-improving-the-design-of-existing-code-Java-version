@@ -10,12 +10,13 @@ import java.util.Locale;
 
 public class Statement {
     PlayData playData;
-
-    public Statement(PlayData playData){
+    Invoice invoice;
+    public Statement(PlayData playData, Invoice invoice){
         this.playData = playData;
+        this.invoice = invoice;
     }
 
-    public String GenerateStatement(Invoice invoice){
+    public String GenerateStatement(){
         int totalAmount = 0;
         StringBuilder result = new StringBuilder();
         result.append("OldNotRefactored.Statement for " + invoice.getCustomer() +"\n");
@@ -25,15 +26,20 @@ public class Statement {
             totalAmount += amountFor(perf);
         }
 
-        int volumeCredits = 0;
-        for(Performance perf : invoice.getPerformances()){
-            volumeCredits += volumeCreditsFor(perf);
-        }
+        int volumeCredits = totalVolumeCredits();
 
         result.append("Amount owed is " +  toPond(totalAmount/100)+"\n");
         result.append("You earned " + volumeCredits + " credits\n");
 
         return result.toString();
+    }
+
+    private int totalVolumeCredits() {
+        int result = 0;
+        for(Performance perf : invoice.getPerformances()){
+            result += volumeCreditsFor(perf);
+        }
+        return result;
     }
 
     private String toPond(int number) {

@@ -13,8 +13,8 @@ public class StatementTest {
     @Test
     public void testGenerateStatement(){
 
-        Statement statement = new Statement(generatePlayData());
-        String output = statement.GenerateStatement(generateInvoiceData());
+        Statement statement = new Statement(generatePlayData(), generateInvoiceData());
+        String output = statement.GenerateStatement();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("OldNotRefactored.Statement for BigCo\n");
