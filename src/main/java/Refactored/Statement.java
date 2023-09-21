@@ -25,11 +25,9 @@ public class Statement {
             result.append(playFor(perf).getName() + ":" + toPond(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
             totalAmount += amountFor(perf);
         }
-
-        int volumeCredits = totalVolumeCredits();
-
+        
         result.append("Amount owed is " +  toPond(totalAmount/100)+"\n");
-        result.append("You earned " + volumeCredits + " credits\n");
+        result.append("You earned " + totalVolumeCredits() + " credits\n");
 
         return result.toString();
     }
