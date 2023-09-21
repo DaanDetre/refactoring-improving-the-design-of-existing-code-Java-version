@@ -17,17 +17,19 @@ public class Statement {
 
     public String GenerateStatement(Invoice invoice){
         int totalAmount = 0;
-        int volumeCredits = 0;
         StringBuilder result = new StringBuilder();
         result.append("OldNotRefactored.Statement for " + invoice.getCustomer() +"\n");
 
-
         for(Performance perf : invoice.getPerformances()){
-            volumeCredits += volumeCreditsFor(perf);
-            // print line for this order
             result.append(playFor(perf).getName() + ":" + toPond(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
             totalAmount += amountFor(perf);
         }
+
+        int volumeCredits = 0;
+        for(Performance perf : invoice.getPerformances()){
+            volumeCredits += volumeCreditsFor(perf);
+        }
+
         result.append("Amount owed is " +  toPond(totalAmount/100)+"\n");
         result.append("You earned " + volumeCredits + " credits\n");
 
