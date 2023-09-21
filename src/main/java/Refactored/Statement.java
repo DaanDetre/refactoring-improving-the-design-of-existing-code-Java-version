@@ -9,7 +9,7 @@ public class Statement {
 
     }
 
-    public String GenerateStatement(PlayData playData, Invoice invoice){
+    public String generatePlainTextStatement(PlayData playData, Invoice invoice){
         return renderPlainText(new CalculateStatementData(playData, invoice));
     }
 

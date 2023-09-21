@@ -14,7 +14,7 @@ public class StatementTest {
     public void testGenerateStatement(){
 
         Statement statement = new Statement();
-        String output = statement.GenerateStatement(generatePlayData(), generateInvoiceData());
+        String output = statement.generatePlainTextStatement(generatePlayData(), generateInvoiceData());
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Refactored.Statement for BigCo\n");
