@@ -37,10 +37,10 @@ public class Statement {
     }
 
     private int volumeCreditsFor(Performance perf) {
-        int volumeCredits = 0;
-        volumeCredits += Math.max(perf.getAudience() - 30, 0);
-        if ("comedy".equals(playFor(perf).getType())) volumeCredits += Math.floor(perf.getAudience() / 5f);
-        return volumeCredits;
+        int result = 0;
+        result += Math.max(perf.getAudience() - 30, 0);
+        if ("comedy".equals(playFor(perf).getType())) result += Math.floor(perf.getAudience() / 5f);
+        return result;
     }
 
     private Play playFor(Performance perf) {
