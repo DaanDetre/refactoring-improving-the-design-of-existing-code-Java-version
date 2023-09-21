@@ -17,15 +17,17 @@ public class Statement {
     }
 
     public String GenerateStatement(){
-        int totalAmount = 0;
         StringBuilder result = new StringBuilder();
         result.append("OldNotRefactored.Statement for " + invoice.getCustomer() +"\n");
 
+        int totalAmount = 0;
         for(Performance perf : invoice.getPerformances()){
-            result.append(playFor(perf).getName() + ":" + toPond(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
             totalAmount += amountFor(perf);
         }
-        
+        for(Performance perf : invoice.getPerformances()){
+            result.append(playFor(perf).getName() + ":" + toPond(amountFor(perf) / 100) + " "  + perf.getAudience() + " seats\n");
+        }
+
         result.append("Amount owed is " +  toPond(totalAmount/100)+"\n");
         result.append("You earned " + totalVolumeCredits() + " credits\n");
 
