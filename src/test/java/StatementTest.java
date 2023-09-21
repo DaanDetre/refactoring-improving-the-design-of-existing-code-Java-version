@@ -11,7 +11,7 @@ import static junit.framework.Assert.assertEquals;
 public class StatementTest {
 
     @Test
-    public void testGenerateStatement(){
+    public void testGeneratePlainTextStatement(){
 
         Statement statement = new Statement();
         String output = statement.generatePlainTextStatement(generatePlayData(), generateInvoiceData());
@@ -23,6 +23,24 @@ public class StatementTest {
         stringBuilder.append("Othello:£500.00 40 seats\n");
         stringBuilder.append("Amount owed is £1,730.00\n");
         stringBuilder.append("You earned 47 credits\n");
+
+        assertEquals(stringBuilder.toString(), output);
+    }
+
+    @Test
+    public void testGenerateHTMLStatement(){
+
+        Statement statement = new Statement();
+        String output = statement.generateHTMLStatement(generatePlayData(), generateInvoiceData());
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("<h1>Refactored.Statement for BigCo</h1>\n");
+        stringBuilder.append("<table>\n");
+        stringBuilder.append("<tr><th>play</th><th>seats</th><th>cost</th></th></tr>\n");
+        stringBuilder.append("<tr><td>Hamlet</td><td>55</td><td>£650.00</td></tr>\n");
+        stringBuilder.append("</table>\n");
+        stringBuilder.append("<p>Amount owed is <em>£1,730.00</em></p>\n");
+        stringBuilder.append("<p>You earned <em>47</em> credits\n");
 
         assertEquals(stringBuilder.toString(), output);
     }
